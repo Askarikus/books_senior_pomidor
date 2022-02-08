@@ -19,9 +19,8 @@ class BookViewSet(ModelViewSet):
                         then=1
                     )
                 )
-            ),
-            rating=Avg('book__rate')
-        ).order_by('id')
+            )
+        ).select_related('owner').prefetch_related('readers').order_by('id')
     serializer_class = BooksSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     permission_classes = [IsOwnerOrStuffOrReadOnly]
